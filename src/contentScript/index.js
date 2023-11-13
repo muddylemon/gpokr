@@ -20,9 +20,11 @@ chatButtons.style.flexWrap = 'wrap'
 
 buttonsData.forEach((buttonData) => {
   const button = document.createElement('button')
-  button.classList.add(['iogc-NewButton-white', 'iogc-NewButton', 'iogc-ButtonSpace-left'])
-  button.innerText = buttonData.text
-  button.title = buttonData.title
+  button.classList.add('iogc-NewButton-white')
+  button.classList.add('iogc-NewButton')
+  button.classList.add('iogc-ButtonSpace-left')
+  button.style.rightMargin = '5px'
+  button.innerText = buttonData.title
   button.addEventListener('click', () => {
     chatInput.value = chatInput.value + ' ' + buttonData.text
     chatButton.click()
