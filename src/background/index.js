@@ -1,7 +1,10 @@
 console.log('background is running')
-
-chrome.runtime.onMessage.addListener((request) => {
-  if (request.type === 'COUNT') {
-    console.log('background has received a message from popup, and count is ', request?.count)
-  }
-})
+chrome.webRequest.onBeforeRequest.addListener(
+  function (details) {
+    if (details.url.endsWith('your_turn.mp3')) {
+      return { redirectUrl: chrome.runtime.getURL('sounds/bet.mp3') }
+    }
+  },
+  { urls: ['*://gpokr.com/gpokr2/sound/*'] },
+  ['blocking'],
+)
