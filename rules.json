@@ -1,18 +1,18 @@
 [
-    {
-        "id": 1,
-        "priority": 1,
-        "action": {
-            "type": "redirect",
-            "redirect": {
-                "url": "chrome-extension://jejbpmaimkknbhbhfaiakgikdefhpmbo/sounds/cards.mp3"
-            }
-        },
-        "condition": {
-            "urlFilter": "|https://gpokr.com/gpokr2/sound/your_turn.mp3",
-            "resourceTypes": [
-                "media"
-            ]
-        }
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "url": "chrome-extension://jejbpmaimkknbhbhfaiakgikdefhpmbo/sounds/cards.mp3"
+      }
+    },
+    "condition": {
+      "urlFilter": "|https://gpokr.com/gpokr2/sound/your_turn.mp3",
+      "resourceTypes": [
+        "media"
+      ]
     }
+  }
 ]
