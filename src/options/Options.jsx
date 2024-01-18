@@ -15,15 +15,17 @@ export const Options = () => {
   console.log('Loading options page')
   const [chatButtons, setChatButtons] = useState(defaultChatButtons)
 
-  // useEffect(() => {
-  //   chrome.storage.sync.get(['chatButtons'], (result) => {
-  //     setChatButtons(result || defaultChatButtons)
-  //   })
-  // }, [])
+  useEffect(() => {
+    chrome.storage.sync.get(['chatButtons'], (result) => {
+      if (result.chatButtons) {
+        setChatButtons(result.chatButtons)
+      }
+    })
+  }, [])
 
   const updateChatButtons = (newChatButtons) => {
-    setChatButtons(newChatButtons)
     chrome.storage.sync.set({ chatButtons: newChatButtons }, () => {
+      setChatButtons(newChatButtons)
       console.log('Chat buttons updated')
     })
   }

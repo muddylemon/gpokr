@@ -5,7 +5,7 @@
         "action": {
             "type": "redirect",
             "redirect": {
-                "url": "chrome-extension://jejbpmaimkknbhbhfaiakgikdefhpmbo/sounds/bet.mp3"
+                "url": "chrome-extension://jejbpmaimkknbhbhfaiakgikdefhpmbo/sounds/cards.mp3"
             }
         },
         "condition": {

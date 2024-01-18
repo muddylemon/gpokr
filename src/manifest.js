@@ -12,6 +12,10 @@ export default defineManifest({
     48: 'img/logo-48.png',
     128: 'img/logo-128.png',
   },
+  options_ui: {
+    page: 'options.html',
+    open_in_tab: true,
+  },
   content_scripts: [
     {
       matches: ['*://gpokr.com/*'],
@@ -24,6 +28,8 @@ export default defineManifest({
     {
       resources: [
         'sounds/bet.mp3',
+        'sounds/cards.mp3',
+        'sounds/shuffle.mp3',
         'img/logo-16.png',
         'img/logo-34.png',
         'img/logo-48.png',
