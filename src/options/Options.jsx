@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-
 import './Options.css'
+
+import React, { useEffect, useState } from 'react'
 
 const defaultChatButtons = [
   { text: 'gg', title: 'gg 🃏' },
@@ -28,6 +28,11 @@ export const Options = () => {
       setChatButtons(newChatButtons)
       console.log('Chat buttons updated')
     })
+  }
+  // add a new chat button
+  const addChatButton = () => {
+    const newChatButtons = [...chatButtons, { text: '', title: '' }]
+    updateChatButtons(newChatButtons)
   }
 
   return (
@@ -57,6 +62,7 @@ export const Options = () => {
           </div>
         ))}
       </div>
+      <button onClick={addChatButton}>Add Chat Button</button>
     </main>
   )
 }
