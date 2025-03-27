@@ -1,31 +1,299 @@
-@media (prefers-color-scheme: light) {
-  a:hover {
-    color: #61dafb;
-  }
+/* src/options/Options.css */
+:root {
+  --primary-color: #61dafb;
+  --secondary-color: #4a89dc;
+  --accent-color: #e74c3c;
+  --bg-color: #fafafa;
+  --text-color: #333;
+  --border-color: #ddd;
+  --card-bg-color: #fff;
+  --input-bg-color: #fff;
+  --success-color: #2ecc71;
+
+  /* Transition for smooth theme switching */
+  --transition-speed: 0.3s;
 }
 
+/* Dark theme variables */
+.dark-theme {
+  --primary-color: #4a89dc;
+  --secondary-color: #61dafb;
+  --accent-color: #e74c3c;
+  --bg-color: #1e1e2e;
+  --text-color: #e0e0e0;
+  --border-color: #444;
+  --card-bg-color: #2d2d3f;
+  --input-bg-color: #3a3a4a;
+}
+
+/* Global styles */
 body {
-  min-width: 20rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-main {
-  text-align: center;
-  padding: 1em;
+/* Container */
+.options-container {
+  max-width: 800px;
   margin: 0 auto;
+  padding: 20px;
 }
 
-h3 {
-  color: #61dafb;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 200;
-  line-height: 1.2rem;
-  margin: 2rem auto;
+/* Header styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-a {
-  font-size: 0.5rem;
-  margin: 0.5rem;
-  color: #cccccc;
-  text-decoration: none;
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  margin-right: 15px;
+}
+
+.logo h1 {
+  font-size: 24px;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+/* Theme toggle switch */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle span {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Section styles */
+.options-section {
+  background-color: var(--card-bg-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition-speed);
+}
+
+.options-section h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.section-description {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* Chat buttons container */
+.chat-buttons-container {
+  margin-bottom: 20px;
+}
+
+.button-row {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.header-row {
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.button-label {
+  flex: 1;
+  padding-right: 10px;
+}
+
+.button-text {
+  flex: 2;
+  padding-right: 10px;
+}
+
+.button-actions {
+  width: 40px;
+  text-align: center;
+}
+
+/* Input styles */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Button styles */
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.delete-button {
+  background-color: var(--accent-color);
+  color: white;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 18px;
+  border-radius: 50%;
+}
+
+.add-button {
+  background-color: var(--primary-color);
+  color: white;
+  margin-right: 10px;
+}
+
+.reset-button {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+.button-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* Status message */
+.status-message {
+  margin-left: 15px;
+  color: var(--success-color);
+  font-weight: bold;
+  animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Preview section */
+.preview-container {
+  background-color: #333;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.chat-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.preview-button {
+  background-color: white;
+  color: #333;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-color);
+  opacity: 0.7;
 }
