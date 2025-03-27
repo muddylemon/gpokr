@@ -16,6 +16,10 @@ export default defineManifest({
     page: 'options.html',
     open_in_tab: true,
   },
+  background: {
+    service_worker: 'src/background/index.js',
+    type: 'module',
+  },
   content_scripts: [
     {
       matches: ['*://gpokr.com/*'],
@@ -38,13 +42,4 @@ export default defineManifest({
       matches: ['*://gpokr.com/*'],
     },
   ],
-  declarative_net_request: {
-    rule_resources: [
-      {
-        id: 'ruleset_1',
-        enabled: true,
-        path: 'rules.json',
-      },
-    ],
-  },
 })
