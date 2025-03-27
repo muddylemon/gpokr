@@ -26,6 +26,8 @@ const interval = setInterval(() => {
       if (result.chatButtons) {
         chatButtonsData = result.chatButtons
       }
+      console.log('🃏 chatButtonsData', chatButtonsData)
+
       chatButtonsData.forEach((buttonData) => {
         const button = document.createElement('button')
         button.classList.add('iogc-NewButton-white')
@@ -40,7 +42,6 @@ const interval = setInterval(() => {
         chatButtonContainer.appendChild(button)
       })
     })
-    console.log('🃏 chatButtonsData', chatButtonsData)
 
     console.log("🃏 gpokr's chat panel is loaded")
     chatPanel.appendChild(chatButtonContainer)
