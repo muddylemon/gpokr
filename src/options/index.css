@@ -26,3 +26,11 @@ body {
   min-width: 20rem;
   margin: 0;
 }
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #61dafb;
+}

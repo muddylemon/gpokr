@@ -12,7 +12,6 @@ const defaultChatButtons = [
 ]
 
 export const Options = () => {
-  console.log('Loading options page')
   const [chatButtons, setChatButtons] = useState(defaultChatButtons)
 
   useEffect(() => {
