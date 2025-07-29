@@ -1,4 +1,3 @@
-// src/contentScript/index.js
 console.info('🃏 gpokr is running')
 
 // Function to efficiently create chat buttons
