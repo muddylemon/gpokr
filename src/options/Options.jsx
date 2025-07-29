@@ -1,6 +1,5 @@
 import './Options.css'
 
-// src/options/Options.jsx
 import React, { useEffect, useState } from 'react'
 
 const Options = () => {
@@ -8,41 +7,73 @@ const Options = () => {
   const [chatButtons, setChatButtons] = useState([])
   const [status, setStatus] = useState('')
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [hideHeader, setHideHeader] = useState(false)
+  const [hideSidebar, setHideSidebar] = useState(false)
 
-  // Load saved chat buttons and theme preference
+  // Load saved preferences
   useEffect(() => {
-    chrome.storage.sync.get(['chatButtons', 'isDarkMode'], (result) => {
-      if (result.chatButtons && result.chatButtons.length > 0) {
-        setChatButtons(result.chatButtons)
-      } else {
-        // Default buttons if none are saved
-        setChatButtons([
-          { text: 'gg', title: 'gg 🃏' },
-          { text: 'gl 2 all fiends, lets lagggg', title: 'gadbois' },
-          { text: 'ty', title: 'ty' },
-          { text: 'nh', title: 'nh' },
-          { text: 'lol', title: 'lol 😜' },
-          { text: 'rofl', title: 'rofl' },
-        ])
-      }
-
-      setIsDarkMode(result.isDarkMode === true)
-    })
+    chrome.storage.sync.get(
+      ['chatButtons', 'isDarkMode', 'hideHeader', 'hideSidebar'],
+      (result) => {
+        if (result.chatButtons && result.chatButtons.length > 0) {
+          setChatButtons(result.chatButtons)
+        } else {
+          // Default buttons if none are saved
+          setChatButtons([
+            { text: 'gg', title: 'gg 🃏' },
+            { text: 'gl 2 all fiends, lets lagggg', title: 'gadbois' },
+            { text: 'ty', title: 'ty' },
+            { text: 'nh', title: 'nh' },
+            { text: 'lol', title: 'lol 😜' },
+            { text: 'rofl', title: 'rofl' },
+          ])
+        }
+        setIsDarkMode(result.isDarkMode === true)
+        setHideHeader(result.hideHeader === true)
+        setHideSidebar(result.hideSidebar === true)
+      },
+    )
   }, [])
 
-  // Save theme preference when it changes
+  // Save theme and layout preferences when they change
   useEffect(() => {
-    chrome.storage.sync.set({ isDarkMode })
+    chrome.storage.sync.set({ isDarkMode, hideHeader, hideSidebar })
 
-    // Apply theme to document
+    // Send a message to the content script to apply changes immediately
+    // This ensures the changes are reflected on the poker page without a refresh
+    chrome.tabs.query({ url: '*://gpokr.com/*' }, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.tabs
+          .sendMessage(tab.id, {
+            action: 'apply-styles',
+            isDarkMode,
+            hideHeader,
+            hideSidebar,
+          })
+          .catch((error) => console.error('Error sending message:', error))
+      })
+    })
+
+    // Apply dark theme to options page itself
     document.body.classList.toggle('dark-theme', isDarkMode)
-  }, [isDarkMode])
+  }, [isDarkMode, hideHeader, hideSidebar])
 
   // Save chat buttons to storage
   const saveChatButtons = (newButtons) => {
     chrome.storage.sync.set({ chatButtons: newButtons }, () => {
       setChatButtons(newButtons)
-      showStatus('Changes saved!')
+      showStatus('Chat buttons saved!')
+      // Also send message to content script to update chat buttons on the page
+      chrome.tabs.query({ url: '*://gpokr.com/*' }, (tabs) => {
+        tabs.forEach((tab) => {
+          chrome.tabs
+            .sendMessage(tab.id, {
+              action: 'update-chat-buttons',
+              chatButtons: newButtons,
+            })
+            .catch((error) => console.error('Error sending message:', error))
+        })
+      })
     })
   }
 
@@ -73,17 +104,35 @@ const Options = () => {
 
   // Reset to default buttons
   const resetToDefaults = () => {
-    if (window.confirm('Reset to default chat buttons?')) {
-      const defaultButtons = [
-        { text: 'gg', title: 'gg 🃏' },
-        { text: 'gl 2 all fiends, lets lagggg', title: 'gadbois' },
-        { text: 'ty', title: 'ty' },
-        { text: 'nh', title: 'nh' },
-        { text: 'lol', title: 'lol 😜' },
-        { text: 'rofl', title: 'rofl' },
-      ]
-      saveChatButtons(defaultButtons)
-    }
+    // Using a custom modal for confirmation instead of window.confirm
+    const confirmReset = (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <p>Are you sure you want to reset to default chat buttons?</p>
+          <div className="modal-actions">
+            <button
+              onClick={() => {
+                const defaultButtons = [
+                  { text: 'gg', title: 'gg 🃏' },
+                  { text: 'gl 2 all fiends, lets lagggg', title: 'gadbois' },
+                  { text: 'ty', title: 'ty' },
+                  { text: 'nh', title: 'nh' },
+                  { text: 'lol', title: 'lol 😜' },
+                  { text: 'rofl', title: 'rofl' },
+                ]
+                saveChatButtons(defaultButtons)
+                // Close modal
+                setStatus('')
+              }}
+            >
+              Yes
+            </button>
+            <button onClick={() => setStatus('')}>No</button>
+          </div>
+        </div>
+      </div>
+    )
+    setStatus(confirmReset)
   }
 
   return (
@@ -107,6 +156,34 @@ const Options = () => {
       </header>
 
       <main>
+        <section className="options-section">
+          <h2>Display Settings</h2>
+          <div className="setting-item">
+            <label htmlFor="hideHeaderToggle">Hide Header</label>
+            <label className="switch">
+              <input
+                type="checkbox"
+                id="hideHeaderToggle"
+                checked={hideHeader}
+                onChange={() => setHideHeader(!hideHeader)}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+          <div className="setting-item">
+            <label htmlFor="hideSidebarToggle">Hide Sidebar</label>
+            <label className="switch">
+              <input
+                type="checkbox"
+                id="hideSidebarToggle"
+                checked={hideSidebar}
+                onChange={() => setHideSidebar(!hideSidebar)}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+        </section>
+
         <section className="options-section">
           <h2>Custom Chat Buttons</h2>
           <p className="section-description">
@@ -161,7 +238,7 @@ const Options = () => {
             <button className="reset-button" onClick={resetToDefaults}>
               Reset to Defaults
             </button>
-            {status && <div className="status-message">{status}</div>}
+            {status && <div className="status-message-wrapper">{status}</div>}
           </div>
         </section>
 
