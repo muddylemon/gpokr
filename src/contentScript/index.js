@@ -332,7 +332,7 @@ function applyStyles(isDarkMode, hideHeader, hideSidebar) {
     `
   } else {
     // Ensure header is visible if toggle is off
-    styles += `#hd { display: block !important; }`
+    styles += `#hd { display: flex !important; }`
   }
 
   if (hideSidebar) {
@@ -358,12 +358,16 @@ function applyStyles(isDarkMode, hideHeader, hideSidebar) {
       }
 
       /* Ensure parent containers are flexible */
-      #all, #page, #bd {
+      #all, #page {
         width: 100% !important;
         min-width: unset !important; /* Remove min-width constraints */
         display: block !important; /* Revert to block to avoid flex issues if not needed */
         height: auto !important; /* Let content define height */
         box-sizing: border-box !important;
+      }
+      #bd {
+        width: 100% !important; /* Ensure body content takes full width */
+        display: flex !important; /* Use flexbox for layout */
       }
       /* Override fixed width for #doc and related YUI grid elements */
       #doc, #doc2, #doc3, .yui-t1, .yui-t2, .yui-t3, .yui-t4, .yui-t5, .yui-t6, .yui-t7 {
